@@ -17,7 +17,6 @@ jobs:
       - name: Bicep Build
         run: 
           az bicep build --file bicep/main.bicep
-        run:
           az bicep build --file bicep/ResourceGroup.bicep
       - name: Create Resource Group
         uses: Azure/CLI@v1
