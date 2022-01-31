@@ -8,10 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      ResourceGroupName: azbicep-dev-cindia-rg
-      ResourceGroupLocation: "centralindia"
-    environment: dev
     steps:
       - uses: actions/checkout@v2
       - name: Azure Login
@@ -21,12 +17,12 @@ jobs:
       - name: Bicep Build
         run: 
           az bicep build --file bicep/main.bicep
-      - name: Az CLI Create Resource Group
+        run:
+          az bicep build --file bicep/ResourceGroup.bicep
+      - name: Create Resource Group
         uses: Azure/CLI@v1
         with:
-          inlineScript: |
-          #!/bin/bash
-          az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
+          template: ./BicepFiles/ResourceGroup.json
       - name: Bicep Deploy
         uses: Azure/arm-deploy@v1
         with:
